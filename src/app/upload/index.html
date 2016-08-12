@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html xml:ng="http://angularjs.org" id="ng-app">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<!--<div class="content" ui-view="contentView"></div>-->
+
+<div class="page-active">
+
+    <div class="page-header text-center">
+        <h1>一粒云－文件上传 </h1>
+    </div>
+
+    <div class="online-active text-center center-block">
+
+        <form id="uploadform" action="/file_upload" method="post" enctype="multipart/form-data"
+              class="form-group " style="width: 300px; margin: 0 auto 30px">
+            <input type="file" name="image" style="height: 40px; font-size: 18px; width: 100%; "
+                   class="form-control" placeholder="选择文件"/>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-lg btn-primary" ng-click="submitData()" value="" >上传文件</button>
+        </form>
+    </div>
+
+
+    <div class="well-sm active-tips text-center">
+        <p >
+            更多服务，请到<a href="http://www.yliyun.com">一粒云官网</a>获取更多简单实用的工具软件和服务。
+        </p>
+
+        <p ng-if="uploadres"> 上传提示： <span class="text-danger">{{uploadres}}</span></p>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

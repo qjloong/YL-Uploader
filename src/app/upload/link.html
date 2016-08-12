@@ -1,0 +1,230 @@
+<div class="container-fluid links" id="links" >
+
+    <div class="label-warning" ng-if="ie8ts">
+        <p class="text-danger text-center" style="margin-bottom: 0">
+            您的浏览器版本过低，将导致文件预览等大部分功能无法使用，
+            请升级浏览器,或者使用其他浏览器打开此链接
+        </p>
+    </div>
+    <!--外链与企业信息-->
+    <div class="links-header">
+
+        <div class="links-header-top">
+            <span>分享者：{{LinkInfo.updateUserName || '未知'}}</span>
+            <span class="pull-right" ng-show="!password"><i class="icon icon-unlock"></i>公开分享</span>
+            <span class="pull-right" ng-show="password"><i class="icon icon-lock"></i> 加密分享</span>|
+
+        </div>
+        <div class="links-ent-info">
+            <img ng-src="{{EntInfo.logo |logo}}" alt=""/>
+            <p>小康股份公司</p>
+        </div>
+        <div class="links-info">
+
+            <span>到期时间：{{LinkInfo.expireTime|| '永久'}}</span>
+            <span ng-if="LinkInfo.shareType === 'down'">   下载：{{LinkInfo.downCount}}</span>
+
+        </div>
+
+        <div class="links-opt" ng-if="ckpwd || !linkStatus">
+
+            <a ng-if="LinkInfo.file.folder" ng-click="beforeNav()" class="btn btn-link btn-warning pull-left">上一级</a>
+
+            <a ng-if="LinkInfo.shareType === 'up'" ng-click="showCreatePanel()"
+               class="btn btn-default " style="margin-right: 10px">
+                <i class="icon icon-plus-circle"></i>新建文件夹</a>
+
+            <a ng-if="LinkInfo.shareType === 'up'"
+               ngf-select="uploadFiles($files, $invalidFiles)" multiple accept="*/*"
+               ngf-max-size="100MB"
+               class="btn btn-warning " style="margin-right: 10px">
+                <i class="icon icon-download"></i>上传文件</a>
+
+            <a ng-if="LinkInfo.shareType === 'down'  && ckpwd" ng-click="dlFiles()"
+               class="btn btn-warning " style="margin-right: 10px">
+                <i class="icon icon-download"></i>下载</a>
+
+        </div>
+
+    </div>
+
+    <!--分享加载中-->
+    <div ng-if="loading" class="well text-warning text-center">
+        <div class="well"><span class="icon icon-spinner icon-spin"></span>分享加载中...</div>
+    </div>
+
+    <div ng-if="!loading" class="links-content">
+
+        <div ng-if="!ckpwd && linkStatus" style="margin-top: 30px;">
+
+            <form class="form-horizontal">
+                <div class="form-group" style="margin: 10px 0" ng-class="{ 'has-error': hasErr}">
+
+                    <label class="col-sm-offset-2 col-sm-2 control-label" for="exampleInputAmount">密码</label>
+
+                    <div class="col-sm-4">
+
+                        <input type="text" class="form-control" ng-model="pwd.name" id="exampleInputAmount"
+                               yli-focus placeholder="密码">
+                    </div>
+                </div>
+                <!--<button type="submit" ng-click="checkpwd()" class="btn btn-sure">确认</button>-->
+
+                <div class="form-group" style="margin: 10px 0">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <button type="submit" ng-click="checkpwd()" class="btn btn-sure">确认</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div style="margin-top: 50px; text-align: center" ng-if="expire">
+            您查找的链接已经过期了...
+        </div>
+
+
+        <div style="margin-top: 50px; text-align: center" ng-if="noexits">
+            没有这个链接...
+        </div>
+
+
+        <div ng-if="ckpwd && linkStatus && !noexits && !expire" class="links-files">
+
+            <div class="path">
+
+                <ul class="list-inline">
+                    <li class="check-btn" ng-click="fileCheck.toggleCheckAll()">
+                        <input type="checkbox" ng-checked="fileCheck.hasCheckAll()"/>
+                    </li>
+                    <!--<li class="return-btn"><a ng-click="beforeNav()"><i-->
+                    <!--class="icon icon-level-up"></i></a></li>-->
+
+                    <li class="path-nav" ng-repeat="nav in breadNav"><a ng-click="enterFolder(nav)">{{nav.fileName}}</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="file-lists" ng-if="LinkInfo.shareType === 'up'">
+
+                <div class="file-upload-list" ng-if="cf.folderShow">
+                    <div class="row">
+
+                        <!--<img src="../../assets/img/filetypeicon/icon_file_45.png" alt=""/>-->
+                        <div class="input-group" ng-class="{'has-error': cf.re == 'fail'}"
+                             style="margin-top:6px;margin-left:20px;margin-right:20px;max-width: 400px">
+
+                            <input type="text" class="form-control" ng-model="cf.cfName" maxlength="64"
+                                   placeholder="新建文件夹"
+                                   yli-focus>
+                            <span ng-if="cf.re == 'fail'">{{cf.msg}}</span>
+
+                            <span class="input-group-btn">
+                                  <button type="submit" class="btn btn-sure" style="margin-left: 5px"
+                                          ng-click="createFolder(this)"><i
+                                          class="icon icon-check"></i></button>
+                            </span>
+                             <span class="input-group-btn">
+                                   <button type="button" class="btn btn-unsure" ng-click="cancelCreateFolder()"
+                                           style="margin-left: 5px"><i
+                                           class="icon icon-remove"></i></button>
+                            </span>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="file-lists">
+
+                <div class="text-center" ng-if="loadList">
+                    <i class="icon icon-spinner icon-2x icon-spin"></i> 文件加载中...
+                </div>
+
+                <div ng-if="!loadList" class="file-list" ng-class="{'selected':file.checked}"
+                     ng-repeat="file in fileList | orderBy: ['-folder','fileName']">
+
+
+                    <div ng-click="fileCheck.toggleCheck(file)">
+
+                        <input type="checkbox" ng-checked="file.checked"
+                               ng-click="fileCheck.multiCheck(file, $event)"/>
+
+                        <div class="file-info col-xs-8 col-sm-8">
+
+                            <!--文件夹-->
+                            <div class="f-name" ng-if="file.folder">
+                                <a ng-click="cFolder(file)">{{file.fileName}}</a>
+                            </div>
+
+
+                            <!--文件 -->
+                            <div class="f-name " ng-if="!file.folder"><a yli-view="file" items="fileList"
+                                                                         view="LinkInfo"> {{file.fileName}}</a>
+                            </div>
+
+                            <!--文件描述-->
+                            <div class="f-desc"><span ng-if="!file.folder">{{file.fileSize | fileSize }}</span>
+                                {{file.createrName}} 于
+                                {{file.createTime |
+                                date:'yy-MM-dd HH:mm '}} - {{file.fileAction |fileAction}}
+                            </div>
+
+                        </div>
+
+                        <img class="pull-right" ng-src="{{file.fileName | fileIcon : file.folder}}" alt=""/>
+
+
+                    </div>
+
+                </div>
+
+                <div ng-if="!loadList && fileList.length == 0 && LinkInfo.shareType != 'up'"
+                     class="text-center well-lg"> 空空如也...
+                </div>
+
+            </div>
+
+            <div class="file-lists" ng-if="LinkInfo.shareType === 'up'">
+
+                <div ng-repeat="file in files" class="file-list">{{f.name}}
+                    <div class="file-info">
+
+                        <!--文件 -->
+                        <div class="f-name"> {{file.name}} <span class="text-danger" ng-show="file.$errorParam">上传失败：{{file.$errorParam}}</span>
+                        </div>
+
+                        <!--文件描述-->
+                        <div class="f-desc"><span>大小 {{file.size | fileSize }}</span>
+
+                             <span class="f-progress" ng-show="file.progress >= 0">
+                                <div style="width:{{file.progress}}%" ng-bind="file.progress + '%'"></div>
+                             </span>
+                        </div>
+                    </div>
+                    <i ng-show="file.progress >= 100 && !errorMsg"
+                       class="icon icon-check-circle icon-lg text-success"></i>
+                    <i ng-show="errorMsg" class="icon icon-remove icon-lg text-danger"></i>
+                    <img class="pull-right" ng-src="{{file.name | fileIcon }}" alt=""/>
+                </div>
+                <div ng-repeat="f in errFiles" class="file-list">{{f.name}} <span class="text-danger"> {{f.$error | ngFileUpload}} {{f.$errorParam}}</span>
+                </div>
+
+                <p class="text-danger" style="margin-left: 10px"> {{errorMsg}} </p>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div ng-if="linkStatus" id="toPhone" class="visible-xs">
+        <a href="yliyun://{{sc}}" class="btn btn-block">应用打开</a>
+        <a href="" class="btn btn-block">下载打开</a>
+    </div>
+
+</div>
