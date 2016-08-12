@@ -4,7 +4,7 @@
 cd root  
 ```
 npm install
-npm install nw
+npm install nw  (+ version)
 ```
 
 copy nw directory to ./res
