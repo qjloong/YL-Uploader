@@ -223,7 +223,7 @@ gulp.task('clean', () => {
 });
 
 
-gulp.task('start',['build'], function() {
+gulp.task('start', function() {
     var nwjs = 'res/nw/0.12.3/win32/nw.exe';
     if (_isMac) {
         nwjs = 'res/nw/0.12.3/osx64/nwjs.app/Contents/MacOS/nwjs';

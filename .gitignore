@@ -1,2 +1,14 @@
 .idea
 .DS_Store
+/.idea
+_
+/_
+tmp
+cache
+/build
+/dist
+node_modules
+nw.exe.lnk
+/release
+/publish
+/res/nw/

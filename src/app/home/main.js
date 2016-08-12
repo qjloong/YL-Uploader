@@ -2,6 +2,8 @@
  * Created by ylicloud on 16/8/11.
  */
 
+//require('../../../node_modules/bootstrap/dist/css/bootstrap.css');
+
 var $ = require("jquery");
 window.$ = window.jQuery = $;
 
@@ -30,8 +32,7 @@ home.config(function ($compileProvider, $locationProvider, $stateProvider, $urlR
 });
 
 home.run(function ($rootScope,  $state, $document) {
-    var httpserver = require('./server.js');
-    httpserver.create(8081);
+
 
 
     var path = require('path');
@@ -39,6 +40,17 @@ home.run(function ($rootScope,  $state, $document) {
     var gui = require('nw.gui');
 
     fs.existsSync = fs.existsSync || path.existsSync;
+
+    $rootScope.port = 8081;
+    $rootScope.serverStatus = undefined;
+
+    $rootScope.startService = function() {
+        var httpserver = require('./server.js');
+        httpserver.create($rootScope.port);
+
+        $rootScope.serverStatus = "服务已启动";
+    };
+
 
     $rootScope.openFileRoot = function() {
 

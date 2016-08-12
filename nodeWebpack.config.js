@@ -37,34 +37,34 @@ module.exports = {
                 loader: 'ng-annotate!babel?presets[]=es2015',
                 exclude: /node_modules/
             },
-            //{
-            //    test: /\.less/,
-            //    loader: 'style!css!less'
-            //},
-            //{
-            //    test: /\.less/,
-            //    loader: ExtractTextPlugin.extract('style', 'css!less')
-            //},
-            //{
-            //    test: /\.css$/,
-            //    loader: 'style!css'
-            //},
-            //{
-            //    test: /\.css$/,
-            //    loader: ExtractTextPlugin.extract('style', 'css')
-            //},
-            //{
-            //    test: /\.(png|jpg|jpeg|gif|ico)/,
-            //    loader: 'url?limit=6500&name=img/[name].[ext]'
-            //},
-            //{
-            //    test: /\.(svg|woff|woff2|ttf|eot|swf|csv)/,
-            //    loader: 'file?name=font/[name].[ext]'
-            //},
-            //{
-            //    test: /\.html$/,
-            //    loader: 'html'
-            //}
+            {
+                test: /\.less/,
+                loader: 'style!css!less'
+            },
+            {
+                test: /\.less/,
+                loader: ExtractTextPlugin.extract('style', 'css!less')
+            },
+            {
+                test: /\.css$/,
+                loader: 'style!css'
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style', 'css')
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|ico)/,
+                loader: 'url?limit=6500&name=img/[name].[ext]'
+            },
+            {
+                test: /\.(svg|woff|woff2|ttf|eot|swf|csv)/,
+                loader: 'file?name=font/[name].[ext]'
+            },
+            {
+                test: /\.html$/,
+                loader: 'html'
+            }
         ]
     },
     plugins: [

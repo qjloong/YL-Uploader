@@ -1,6 +1,9 @@
 # YL-Uploader
 
 
+get [nw](http://nwjs.io/)
+
+
 cd root  
 ```
 npm install
